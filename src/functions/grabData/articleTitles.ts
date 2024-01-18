@@ -1,6 +1,7 @@
 import { examples } from "./examples";
 import { CohereClient } from "cohere-ai";
 import { articleTitlesResolver } from "./articleTitlesResolver";
+import { classificationsToDates } from "./classificationsToDates";
 
 type DateRange = {
   startDate: string;
@@ -19,7 +20,8 @@ export const articleTitles = async ({
 
   // Grabs news
   const parsedNews = await articleTitlesResolver({ dateRange, category });
-  // compile all the titles into one array programatically
+
+  // Compile all the titles into one array of scores programatically
   const titles = parsedNews.reduce((acc, day) => {
     return acc.concat(day["titles"]);
   }, [] as string[]);
@@ -28,34 +30,8 @@ export const articleTitles = async ({
     inputs: titles,
     examples: examples,
   });
-  const LABEL_SCORES: { [key: string]: number } = {
-    "positive review": 10,
-    "negative review": 1,
-  };
-  classifications.forEach(({ prediction, input }) => {
-    if (!prediction || !input) return;
-    parsedNews.forEach((day) => {
-      if (
-        input &&
-        prediction &&
-        Object.keys(LABEL_SCORES).includes(prediction) &&
-        day["titles"].includes(input)
-      ) {
-        day["scores"].push(LABEL_SCORES[prediction]);
-      }
-    });
-  });
 
-  parsedNews.forEach((day) => {
-    day["average"] =
-      day["scores"].reduce((a, b) => a + b, 0) / day["scores"].length;
-  });
-
-  console.log("parsed",parsedNews)
-  const sortedScoresByDay = parsedNews.sort(
-    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
-  console.log("sorted",sortedScoresByDay)
+  const sortedScoresByDay = classificationsToDates(classifications, parsedNews);
 
   return sortedScoresByDay;
 };

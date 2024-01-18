@@ -3,7 +3,7 @@ type DateRange = {
   endDate: string;
 };
 
-type ParsedNews = {
+export type ParsedNews = {
   date: string;
   titles: string[];
   scores: number[];
@@ -45,7 +45,7 @@ export const articleTitlesResolver = async ({
   return parsedNews;
 };
 
-export const fetchNews = async (url) => {
+export const fetchNews = async (url: string) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
