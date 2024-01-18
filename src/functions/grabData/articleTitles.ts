@@ -50,9 +50,12 @@ export const articleTitles = async ({
     day["average"] =
       day["scores"].reduce((a, b) => a + b, 0) / day["scores"].length;
   });
+
+  console.log("parsed",parsedNews)
   const sortedScoresByDay = parsedNews.sort(
     (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
   );
+  console.log("sorted",sortedScoresByDay)
 
   return sortedScoresByDay;
 };

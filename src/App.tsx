@@ -24,7 +24,7 @@ function App() {
 
   return (
     <>
-      {articles.map((article,i) => {
+      {articles.map((article, i) => {
         return (
           <div key={`article-${i}`}>
             {article.date} - {article.average}
