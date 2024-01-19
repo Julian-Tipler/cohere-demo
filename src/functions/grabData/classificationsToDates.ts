@@ -1,7 +1,7 @@
 import { ClassifyResponseClassificationsItem } from "cohere-ai/api";
 import { ParsedNews } from "./articleTitlesResolver";
 
-export const classificationsToDates = async (
+export const classificationsToDates = (
   classifications: ClassifyResponseClassificationsItem[],
   parsedNews: ParsedNews[]
 ) => {

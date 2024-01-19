@@ -3,6 +3,7 @@ import { CohereClient } from "cohere-ai";
 import { articleTitlesResolver } from "./articleTitlesResolver";
 import { classificationsToDates } from "./classificationsToDates";
 
+
 type DateRange = {
   startDate: string;
   endDate: string;
@@ -32,6 +33,5 @@ export const articleTitles = async ({
   });
 
   const sortedScoresByDay = classificationsToDates(classifications, parsedNews);
-
   return sortedScoresByDay;
 };
