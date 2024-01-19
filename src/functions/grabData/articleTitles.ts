@@ -21,6 +21,7 @@ export const articleTitles = async ({
 
   // Grabs news
   const parsedNews = await articleTitlesResolver({ dateRange, category });
+  console.log("parsedNews",parsedNews)
 
   // Compile all the titles into one array of scores programatically
   const titles = parsedNews.reduce((acc, day) => {

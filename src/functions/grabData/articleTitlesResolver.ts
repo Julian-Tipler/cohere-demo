@@ -21,7 +21,7 @@ export const articleTitlesResolver = async ({
   const dateRangeParam = dateRange
     ? `&from=${dateRange["startDate"]}&to=${dateRange["endDate"]}`
     : "";
-  const baseUrl = `https://newsapi.org/v2/everything?sources=techcrunch&language=en${categoryParam}${dateRangeParam}&apiKey=14b888fb788e484388f89e920f867f2f`;
+  const baseUrl = `https://newsapi.org/v2/everything?sources=techcrunch,thenextweb.com&language=en${categoryParam}${dateRangeParam}&apiKey=14b888fb788e484388f89e920f867f2f`;
 
   const news = await fetchNews(baseUrl);
 

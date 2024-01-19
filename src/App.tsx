@@ -27,7 +27,7 @@ function App() {
     articleTitles({
       dateRange: {
         startDate: "2024-01-01",
-        endDate: "2024-01-04",
+        endDate: "2024-01-10",
       },
     }).then((res) => {
       setArticles(res);
@@ -36,32 +36,36 @@ function App() {
 
   const labels = articles.map((article) => article.date);
   const data = articles.map((article) => article.average);
-  console.log("labels", labels);
-  console.log("data", data);
 
   if (!articles.length) return <div>Loading...</div>;
 
   return (
     <>
-      {articles.map((article, i) => {
-        return (
-          <div key={`article-${i}`}>
-            {article.date} - {article.average}
-          </div>
-        );
-      })}
-      <Line
-        data={{
-          labels,
-          datasets: [
-            {
-              label: "sentiment",
-              data,
-              borderWidth: 1,
-            },
-          ],
+      <div
+        style={{
+          width: "100%",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-      />
+      >
+        <Line
+          data={{
+            labels,
+            datasets: [
+              {
+                label: "sentiment",
+                data,
+                borderWidth: 1,
+                fill: false,
+                borderColor: "rgb(75, 192, 192)",
+                tension: 0.1,
+              },
+            ],
+          }}
+        />
+      </div>
     </>
   );
 }
