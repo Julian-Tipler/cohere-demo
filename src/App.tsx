@@ -44,8 +44,8 @@ function App() {
     <div>News sentiment by date</div>
       <div
         style={{
-          width: "500px",
-          height: "500px",
+          width: "600px",
+          height: "600px",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
