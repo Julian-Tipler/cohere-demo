@@ -2,7 +2,8 @@ import { examples } from "./examples";
 import { CohereClient } from "cohere-ai";
 import { articleTitlesResolver } from "./articleTitlesResolver";
 import { classificationsToDates } from "./classificationsToDates";
-
+import dotenv from "dotenv";
+dotenv.config();
 
 type DateRange = {
   startDate: string;
@@ -16,12 +17,11 @@ export const articleTitles = async ({
   category?: string;
 }) => {
   const cohere = new CohereClient({
-    token: "LyXpMQ3g4B1lsE6GmnFkGMAFmIPzOLc0zZyrwk8v",
+    token: process.env.COHERE_API_KEY as string,
   });
 
   // Grabs news
   const parsedNews = await articleTitlesResolver({ dateRange, category });
-  console.log("parsedNews",parsedNews)
 
   // Compile all the titles into one array of scores programatically
   const titles = parsedNews.reduce((acc, day) => {
