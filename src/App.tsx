@@ -10,7 +10,6 @@ import {
   PointElement,
 } from "chart.js";
 
-
 Chart.register(CategoryScale);
 Chart.register(LinearScale);
 Chart.register(PointElement);
@@ -23,7 +22,7 @@ type DailyData = {
 
 function App() {
   const [articles, setArticles] = useState<DailyData[]>([]);
-  const [info, setNode] = useState<string | null>(null);
+  const [focusedNode, setFocusedNode] = useState<PointElement | null>(null);
 
   useEffect(() => {
     const today = new Date().toISOString().slice(0, 10);
@@ -42,6 +41,13 @@ function App() {
 
   if (!articles.length) return <div>Loading...</div>;
 
+  const canvasX = document
+    .querySelector(".date-chart")
+    ?.getBoundingClientRect().x;
+  const canvasY = document
+    .querySelector(".date-chart")
+    ?.getBoundingClientRect().y;
+
   return (
     <>
       <div>News sentiment by date</div>
@@ -55,6 +61,7 @@ function App() {
         }}
       >
         <Line
+          className="date-chart"
           data={{
             labels,
             datasets: [
@@ -69,25 +76,49 @@ function App() {
             ],
           }}
           options={{
-            onHover: handleHover(setNode),
+            onHover: handleHover(focusedNode, setFocusedNode),
           }}
         />
-        <div>f{info}</div>
+        {focusedNode && (
+          <div
+            style={{
+              position: "absolute",
+              top: canvasY + focusedNode.y,
+              left: canvasX + focusedNode.x,
+              width: "100px",
+              height: "100px",
+              backgroundColor: "white",
+              zIndex: 1000,
+            }}
+          >
+            focusedNode
+          </div>
+        )}
       </div>
     </>
   );
 }
 
 const handleHover = (
-  setNode: React.Dispatch<React.SetStateAction<string | null>>
+  focusedNode: PointElement | null,
+  setFocusedNode: React.Dispatch<React.SetStateAction<PointElement | null>>
 ) => {
   return (e: any, chartElements: any) => {
     if (!chartElements.length) {
-      setNode(null);
+      setFocusedNode(null);
       return;
     }
-    const node = chartElements[0]["element"];
-    setNode(node);
+    const newfocusedNode = chartElements[0]["element"];
+    if (!focusedNode) return;
+
+    console.log(newfocusedNode.$context, focusedNode.$context);
+    // if (
+    //   !focusedNode ||
+    //   newfocusedNode.$context.dataIndex != focusedNode.$context.dataIndex
+    // ) {
+
+    //   setFocusedNode(newfocusedNode);
+    // }
   };
 };
 
